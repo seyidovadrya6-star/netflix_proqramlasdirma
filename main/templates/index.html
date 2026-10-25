@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Azerbaijan - Watch TV Shows Online, Watch Movies Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* HERO SECTION WITH ADJUSTED FONT SIZE & BACKGROUND */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            min-height: 650px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px 8%;
+            background: 
+                radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.9) 100%),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.3) 50%, #000000 100%),
+                url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToYPdpRJxbX7m4Gw7OWmh3_e49EDTHls_EjcNB_xd7tQ&s=10') center/cover no-repeat;
+            border-bottom: 8px solid #232323;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo {
+            width: 167px;
+            height: auto;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .lang-select {
+            background: rgba(0, 0, 0, 0.6);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .signin-btn {
+            background-color: #e50914;
+            color: #ffffff;
+            padding: 7px 17px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            margin: auto;
+            z-index: 10;
+        }
+
+        /* REDUCED FONT SIZE TO MATCH SCREENSHOT EXACTLY */
+        .hero-content h1 {
+            font-size: 3.1rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-content p.subtitle {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p.cta {
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+
+        .email-form {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .email-form input {
+            width: 380px;
+            height: 52px;
+            padding: 16px;
+            font-size: 0.95rem;
+            background: rgba(15, 15, 15, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            color: #ffffff;
+            outline: none;
+        }
+
+        .email-form button {
+            width: 180px;
+            height: 52px;
+            background-color: #e50914;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .hero-bottom-curve {
+            position: relative;
+            width: 100%;
+            height: 25px;
+            background: #000000;
+            overflow: hidden;
+            margin-top: -12px;
+            z-index: 5;
+        }
+
+        .hero-bottom-curve::after {
+            content: '';
+            position: absolute;
+            top: -75px;
+            left: -10%;
+            width: 120%;
+            height: 90px;
+            border-radius: 50%;
+            border-bottom: 4px solid #e50914;
+            box-shadow: 0px 8px 25px rgba(229, 9, 20, 0.8);
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        /* 5 PER ROW GRID LAYOUT */
+        .trending-grid-5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 28px 22px;
+            margin-bottom: 50px;
+        }
+
+        .poster-card {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 2 / 3;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.25s ease;
+            overflow: hidden;
+            background-color: #1a1a1a;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+        }
+
+        .poster-card:hover {
+            transform: scale(1.06);
+        }
+
+        .poster-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .rank-hollow-number {
+            position: absolute;
+            left: -16px;
+            bottom: -10px;
+            font-size: 4.8rem;
+            font-weight: 900;
+            color: #000000;
+            -webkit-text-stroke: 3px #ffffff;
+            z-index: 10;
+            line-height: 1;
+            user-select: none;
+            font-family: Impact, "Arial Black", sans-serif;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.9);
+        }
+
+        /* MORE REASONS TO JOIN GRID MATCHING SCREENSHOT */
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+            margin-bottom: 60px;
+        }
+
+        .reason-card {
+            background: linear-gradient(135deg, #181528 0%, #0f0a17 100%);
+            padding: 24px 20px;
+            border-radius: 16px;
+            min-height: 240px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .reason-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        .reason-card p {
+            color: #b3b3b3;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .reason-icon-wrapper {
+            align-self: flex-end;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ff2a85, #8a0e5c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            box-shadow: 0 4px 12px rgba(255, 42, 133, 0.3);
+        }
+
+        /* FAQ CONTAINER ACCORDION MATCHING SCREENSHOT EXACTLY */
+        .faq-container {
+            padding: 40px 24px 60px 24px;
+            max-width: 1250px;
+            margin: 0 auto;
+        }
+
+        .faq-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 45px;
+        }
+
+        .faq-item {
+            background-color: #2d2d2d;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 22px 24px;
+            font-size: 1.25rem;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .faq-question:hover {
+            background-color: #414141;
+        }
+
+        .faq-icon {
+            font-size: 2rem;
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        .faq-answer {
+            padding: 0 24px 24px 24px;
+            font-size: 1.1rem;
+            color: #ffffff;
+            display: none;
+            line-height: 1.5;
+            border-top: 1px solid #3d3d3d;
+            margin-top: 8px;
+            padding-top: 20px;
+        }
+
+        /* SECOND CTA AT THE BOTTOM OF FAQ */
+        .faq-bottom-cta {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-bottom-cta p {
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 8px solid #232323;
+            padding: 50px 8%;
+            color: #737373;
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin: 30px 0;
+        }
+
+        .footer-grid a {
+            color: #737373;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 900px) {
+            .trending-grid-5 { grid-template-columns: repeat(3, 1fr); }
+            .reasons-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .trending-grid-5 { grid-template-columns: repeat(2, 1fr); }
+            .reasons-grid { grid-template-columns: 1fr; }
+            .email-form { flex-direction: column; }
+            .email-form input, .email-form button { width: 100%; }
+            .hero-content h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO SECTION -->
+    <div class="hero">
+        <div class="navbar">
+            <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix Logo">
+            <div class="nav-controls">
+                <select class="lang-select">
+                    <option>English</option>
+                </select>
+                <a href="#" class="signin-btn">Sign In</a>
+            </div>
+        </div>
+
+        <div class="hero-content">
+            <h1>Unlimited movies, TV shows, and more</h1>
+            <p class="subtitle">Starts at EUR 7.99. Cancel anytime.</p>
+            <p class="cta">Ready to watch? Enter your email to create or restart your membership.</p>
+            
+            <form class="email-form" onsubmit="event.preventDefault();">
+                <input type="email" placeholder="Email address" required>
+                <button type="submit">Get Started &gt;</button>
+            </form>
+        </div>
+        <div></div>
+    </div>
+
+    <div class="hero-bottom-curve"></div>
+
+    <!-- MAIN BODY -->
+    <div class="container">
+        <h2 class="section-title">Trending Now</h2>
+        
+        <!-- 5 PER ROW GRID WITH YOUR PROVIDED DIRECT LINKS -->
+        <div class="trending-grid-5">
+            
+            <!-- 1. Money Trap -->
+            <div class="poster-card">
+                <span class="rank-hollow-number">1</span>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaRtER_esyDEsZtKOc4nEgHC9UYZlH4gOzVb7EapSdqg&s" alt="Money Trap">
+            </div>
+
+            <!-- 2. Not A Stranger -->
+            <div class="poster-card">
+                <span class="rank-hollow-number">2</span>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRc9TtV_WXioHpgbwf4K4rzxf8LLyFOiiDcDBbzN7Rofw&s=10" alt="Not A Stranger">
+            </div>
+
+            <!-- 3. Lupin -->
+            <div class="poster-card">
+                <span class="rank-hollow-number">3</span>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUr9gzzHMJqv56dly7ACralo7DpwqaMzGqnQLx4G2UFA&s=10" alt="Lupin">
+            </div>
+
+            <!-- 4. Graveyard -->
+            <div class="poster-card">
+                <span class="rank-hollow-number">4</span>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdWhVRvvVeROWQ98hKqdmvtCXbE9-R8VlyRIpgNvYkqg&s=10" alt="Graveyard">
+            </div>
+
+            <!-- 5. The Gentlemen -->
+            <div class="poster-card">
+                <span class="rank-hollow-number">5</span>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL65zw51pzcTtWPfEZ2l1OCzaF3fu1tMNgSfUusoLlAw&s=10" alt="The Gentlemen">
+            </div>
+
+            <!-- 6. Sex/Life -->
+            <div class="poster-card">
+                <span class="rank-hollow-number">6</span>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjLCXcvvmRrUu_u2Zz70mSJuj5L2dOiH9JIbo_gObi2A&s=10" alt="Sex/Life">
+            </div>
+
+            <!-- 7. Money Heist -->
+            <div class="poster-card">
+                <span class="rank-hollow-number">7</span>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrixpywXh7gtBGzIiyAnOh1G3eYpYi4sXeSvrsdgikLw&s=10" alt="Money Heist">
+            </div>
+
+            <!-- 8. Squid Game -->
+            <div class="poster-card">
+                <span class="rank-hollow-number">8</span>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgyzGaHRi0pGwGXTLw474xcGPkU7Ut9njLS1985NVcoQ&s=10" alt="Squid Game">
+            </div>
+
+            <!-- 9. War Machine -->
+            <div class="poster-card">
+                <span class="rank-hollow-number">9</span>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNlzoMJt369gMEQ0srNpJrWuLn8zViEQx7q9IrPlbBZg&s=10" alt="War Machine">
+            </div>
+
+            <!-- 10. Another Self -->
+            <div class="poster-card">
+                <span class="rank-hollow-number">10</span>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRc9TtV_WXioHpgbwf4K4rzxf8LLyFOiiDcDBbzN7Rofw&s=10" alt="Another Self">
+            </div>
+
+        </div>
+
+        <!-- REASONS TO JOIN -->
+        <h2 class="section-title">More Reasons to Join</h2>
+        <div class="reasons-grid">
+            <div class="reason-card">
+                <div>
+                    <h3>Enjoy on your TV</h3>
+                    <p>Watch on Smart TVs, Playstation, Xbox, Chromecast, Apple TV, Blu-ray players, and more.</p>
+                </div>
+                <div class="reason-icon-wrapper">📺</div>
+            </div>
+            <div class="reason-card">
+                <div>
+                    <h3>Download your shows to watch offline</h3>
+                    <p>Save your favorites easily and always have something to watch.</p>
+                </div>
+                <div class="reason-icon-wrapper">⬇</div>
+            </div>
+            <div class="reason-card">
+                <div>
+                    <h3>Watch everywhere</h3>
+                    <p>Stream unlimited movies and TV shows on your phone, tablet, laptop, and TV.</p>
+                </div>
+                <div class="reason-icon-wrapper">🍿</div>
+            </div>
+            <div class="reason-card">
+                <div>
+                    <h3>Create profiles for kids</h3>
+                    <p>Send kids on adventures with their favorite characters in a space made just for them — free with your membership.</p>
+                </div>
+                <div class="reason-icon-wrapper">☺</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ SECTION WITH ALL 7 QUESTIONS FROM SCREENSHOT -->
+    <div class="faq-container">
+        <h2 class="faq-title">Frequently Asked Questions</h2>
+        
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>What is Netflix?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">Netflix is a streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries, and more on thousands of internet-connected devices.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>How much does Netflix cost?</span>
+                    <span class="faq-icon">✕</span>
+                </div>
+                <div class="faq-answer" style="display: block;">Watch Netflix on your smartphone, tablet, Smart TV, laptop, or streaming device, all for one fixed monthly fee. Plans range from EUR 7.99 to EUR 11.99/month (pre-tax).</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Where can I watch?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">Watch anywhere, anytime. Sign in with your Netflix account to watch instantly on the web at netflix.com from your personal computer or on any internet-connected device.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>How do I cancel?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">Netflix is flexible. There are no pesky contracts and no commitments. You can easily cancel your account online in two clicks.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>What can I watch on Netflix?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">Netflix has an extensive library of feature films, documentaries, TV shows, anime, award-winning Netflix originals, and more.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Is Netflix good for kids?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">The Netflix Kids experience is included in your membership to give parents control while kids enjoy family-friendly TV shows and movies in their own space.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Why am I seeing this language?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">Your language preferences determine what language you see Netflix in. You can change your language settings at any time in your profile.</div>
+            </div>
+        </div>
+
+        <!-- SECOND FORM BELOW FAQ -->
+        <div class="faq-bottom-cta">
+            <p>Ready to watch? Enter your email to create or restart your membership.</p>
+            <form class="email-form" onsubmit="event.preventDefault();">
+                <input type="email" placeholder="Email address" required>
+                <button type="submit">Get Started &gt;</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>Questions? Contact us.</p>
+        <div class="footer-grid">
+            <a href="#">FAQ</a>
+            <a href="#">Help Center</a>
+            <a href="#">Account</a>
+            <a href="#">Media Center</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Privacy</a>
+            <a href="#">Cookie Preferences</a>
+            <a href="#">Corporate Information</a>
+        </div>
+        <p>Netflix Azerbaijan</p>
+    </footer>
+
+    <script>
+        function toggleFaq(el) {
+            const answer = el.nextElementSibling;
+            const icon = el.children[1];
+            if (answer.style.display === "block") {
+                answer.style.display = "none";
+                icon.textContent = "+";
+            } else {
+                answer.style.display = "block";
+                icon.textContent = "✕";
+            }
+        }
+    </script>
+</body>
+</html>
